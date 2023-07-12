@@ -20,7 +20,6 @@ class _HomeState extends State<Home> {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.deepPurpleAccent,
         ),
-        backgroundColor: Colors.deepPurple,
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.search)),
           IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_outlined)),
@@ -29,7 +28,6 @@ class _HomeState extends State<Home> {
       drawer: drawer(),
       body: Column(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurple,
         onPressed: () {
           showDialog(
             context: context,
@@ -66,7 +64,9 @@ class _HomeState extends State<Home> {
                               child: SizedBox(
                                 height: 40,
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
                                     style: ButtonStyle(
                                         foregroundColor:
                                             MaterialStateProperty.all<Color>(
