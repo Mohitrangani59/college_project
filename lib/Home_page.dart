@@ -1,8 +1,6 @@
-import 'package:account_manager/common/common_widget.dart';
-import 'package:account_manager/constant/images.dart';
+import 'package:account_manager/common/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
