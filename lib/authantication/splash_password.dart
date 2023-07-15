@@ -1,7 +1,5 @@
 import 'package:account_manager/Home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
 import 'package:sizer/sizer.dart';
 
 class slash_password extends StatefulWidget {
