@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:account_manager/Home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:sizer/sizer.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class slash_password extends StatefulWidget {
   const slash_password({Key? key}) : super(key: key);
@@ -11,10 +15,14 @@ class slash_password extends StatefulWidget {
 
 class _slash_passwordState extends State<slash_password> {
   TextEditingController password = TextEditingController();
+  // var data = Hive.box('password');
 
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
+
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: SafeArea(
@@ -48,9 +56,11 @@ class _slash_passwordState extends State<slash_password> {
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return Home();
-                          },));
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return Home();
+                            },
+                          ));
                         },
                         child: Text(
                           "Forgot Password?",
@@ -76,11 +86,64 @@ class _slash_passwordState extends State<slash_password> {
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 70,
-                        child: TextField(
-                          controller: password,
+                        height: 7.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Digit_holder(),
+                            Digit_holder(),
+                            Digit_holder(),
+                            Digit_holder(),
+                          ],
                         ),
-                      )
+                      ),
+                      10.heightBox,
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  pass_field("1"),
+                                  pass_field("2"),
+                                  pass_field("3"),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  pass_field("4"),
+                                  pass_field("5"),
+                                  pass_field("6"),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  pass_field("7"),
+                                  pass_field("8"),
+                                  pass_field("9"),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  pass_field(null,Icon(Icons.arrow_back_outlined,color: Colors.deepPurple,)),
+                                  pass_field("0"),
+                                  pass_field(null,Icon(Icons.done,color: Colors.deepPurple,)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -95,12 +158,35 @@ class _slash_passwordState extends State<slash_password> {
     );
   }
 
-  Widget pass_field() {
-    return Container(
-      margin: EdgeInsets.all(5),
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(color: Colors.cyan, shape: BoxShape.circle),
+  Widget pass_field([String? s,Icon ?i]) {
+    return InkWell(onTap: () {
+
+    },
+      child: Container(
+        height: 60,
+        width: 60,
+        alignment: Alignment.center,
+        child: (s!=null)?Text(
+          s!,
+          style: TextStyle(fontSize: 20, color: Colors.grey),
+        ):i!,
+      ),
     );
   }
 }
+
+class Digit_holder extends StatelessWidget {
+  const Digit_holder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Container(
+      width: 45,
+      height: 45,
+      decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.deepOrange),
+    );
+  }
+}
+
