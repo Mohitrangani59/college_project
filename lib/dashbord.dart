@@ -1,20 +1,19 @@
+import 'package:account_manager/getx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class Dashbord extends StatefulWidget {
+class Dashbord extends StatelessWidget {
   const Dashbord({Key? key}) : super(key: key);
 
   @override
-  State<Dashbord> createState() => _DashbordState();
-}
-
-class _DashbordState extends State<Dashbord> {
-  String rval = "credit";
-  int cnt = 0;
-
-  @override
   Widget build(BuildContext context) {
+
+    TextEditingController t1=TextEditingController();
+    controler obj=Get.put(controler());
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Xyz"),
@@ -46,9 +45,23 @@ class _DashbordState extends State<Dashbord> {
                             Padding(
                               padding: const EdgeInsets.only(left: 5, right: 5),
                               child: TextField(
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime.now(),
+                                  );
+
+                                  String date = DateFormat('dd/MM/yyyy')
+                                      .format(pickedDate!);
+                                  t1.text = date;
+                                },
+                                controller: t1,
+                                keyboardType: TextInputType.none,
                                 decoration: InputDecoration(
-                                    labelText: "Transaction Date",
-                                    fillColor: Colors.deepPurple),
+                                  label: Text("Transaction Date"),
+                                ),
                               ),
                             ),
                             Padding(
@@ -60,24 +73,14 @@ class _DashbordState extends State<Dashbord> {
                                     style: TextStyle(
                                         fontSize: 13, color: Colors.grey),
                                   ),
-                                  Radio(
-                                    value: "credit",
-                                    groupValue: rval,
-                                    onChanged: (value) {
-                                      rval = value.toString();
-                                      setState(() {});
-                                    },
-                                  ),
-                                  Text("Credit(+)"),
-                                  Radio(
-                                    value: "debit",
-                                    groupValue: rval,
-                                    onChanged: (value) {
-                                      rval = value.toString();
-                                      setState(() {});
-                                    },
-                                  ),
-                                  Text("Debit(-)"),
+                                  const Text("Credit(+)",style: TextStyle(fontSize: 14)),
+                                  Obx(() => Radio(value: "Credit", groupValue: obj.rval.value, onChanged: (value) {
+                                    obj.rediobtn(value.toString());
+                                  })),
+                                  const Text("Debit(-)",style: TextStyle(fontSize: 14)),
+                                  Obx(() => Radio(value: "Debit", groupValue: obj.rval.value, onChanged: (value) {
+                                    obj.rediobtn(value.toString());
+                                  })),
                                 ],
                               ),
                             ),
@@ -131,8 +134,7 @@ class _DashbordState extends State<Dashbord> {
                                   height: 40,
                                   child: ElevatedButton(
                                       onPressed: () {
-                                        cnt++;
-                                        setState(() {});
+                                        obj.fun_cnt();
                                       },
                                       style: ButtonStyle(
                                           foregroundColor:
@@ -172,8 +174,37 @@ class _DashbordState extends State<Dashbord> {
         color: Color.fromARGB(222, 243, 243, 243),
         child: Column(
           children: [
+            Container(
+              width: double.infinity,
+              height: 40,
+              color: Color.fromARGB(222, 243, 243, 243),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("Date"),
+                  Text("Particular"),
+                  Text("Credit"),
+                  Text("Debit"),
+                ],
+              ),
+            ),
             Expanded(
-              child: Container(),
+              child: Container(
+                  child: Obx(() =>ListView.builder(
+                itemCount: obj.cnt.value,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {},
+                    child: Container(
+                      height: 30,
+                      width: double.infinity,
+                      color: (index % 2 == 0)
+                          ? Color.fromARGB(222, 220, 220, 220)
+                          : Color.fromARGB(222, 243, 243, 243),
+                    ),
+                  );
+                },
+              ))),
             ),
             Container(
               width: double.infinity,
@@ -198,9 +229,16 @@ class _DashbordState extends State<Dashbord> {
                         Expanded(
                             child: Container(
                                 alignment: Alignment.center,
-                                child: Text("Credit(+)",style: TextStyle(fontSize: 16),))),
+                                child: Text(
+                                  "Credit(+)",
+                                  style: TextStyle(fontSize: 16),
+                                ))),
                         Expanded(
-                            child: Container(child: Text("0",style: TextStyle(fontSize: 16),))),
+                            child: Container(
+                                child: Text(
+                          "0",
+                          style: TextStyle(fontSize: 16),
+                        ))),
                       ],
                     ),
                   )),
@@ -212,15 +250,22 @@ class _DashbordState extends State<Dashbord> {
                         Expanded(
                             child: Container(
                                 alignment: Alignment.center,
-                                child: Text("Debit(-)",style: TextStyle(fontSize: 16),))),
+                                child: Text(
+                                  "Debit(-)",
+                                  style: TextStyle(fontSize: 16),
+                                ))),
                         Expanded(
-                            child: Container(child: Text("0",style: TextStyle(fontSize: 16),))),
+                            child: Container(
+                                child: Text(
+                          "0",
+                          style: TextStyle(fontSize: 16),
+                        ))),
                       ],
                     ),
                   )),
                   Expanded(
                       child: Container(
-                        color: Colors.deepPurple,
+                    color: Colors.deepPurple,
                     child: Column(
                       children: [
                         Expanded(
@@ -228,15 +273,15 @@ class _DashbordState extends State<Dashbord> {
                                 alignment: Alignment.center,
                                 child: Text(
                                   "Balance",
-                                  style: TextStyle(fontSize: 16,
-                                      color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
                                 ))),
                         Expanded(
                             child: Container(
                                 child: Text(
-                                  "0",
-                                  style: TextStyle(fontSize: 16,color: Colors.white),
-                                ))),
+                          "0",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ))),
                       ],
                     ),
                   )),

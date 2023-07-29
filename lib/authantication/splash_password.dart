@@ -103,7 +103,8 @@ class _slash_passwordState extends State<slash_password> {
                           width: double.infinity,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                            children:
+                            [
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,

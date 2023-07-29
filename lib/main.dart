@@ -1,15 +1,16 @@
 import 'dart:io';
 
 import 'package:account_manager/Home_page.dart';
-import 'package:account_manager/authantication/splash_password.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 
 
-void main(){
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+  );
   runApp(Sizer(
             builder: (context, orientation, deviceType) {
               return MaterialApp(debugShowCheckedModeBanner: false,
